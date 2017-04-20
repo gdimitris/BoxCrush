@@ -3,21 +3,32 @@ package tests;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.gdimitris.boxcrush.Box;
+import com.gdimitris.boxcrush.BoxFactory;
 import com.gdimitris.boxcrush.BoxGrid;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static junit.framework.Assert.*;
-import static org.mockito.Mockito.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class BoxGridTests {
 
     private BoxGrid boxGrid;
+    private BoxFactory boxFactory;
 
     @Before
     public void setup(){
-        boxGrid = new BoxGrid(500,500);
+        boxFactory = Mockito.mock(BoxFactory.class);
+        when(boxFactory.createBox()).thenReturn(Mockito.mock(Box.class));
+        boxGrid = new BoxGrid(boxFactory);
     }
 
     @Test
@@ -74,7 +85,7 @@ public class BoxGridTests {
     }
 
     @Test
-    public void testShouldDelegateDrawCallsToBoxess(){
+    public void testShouldDelegateDrawCallsToBoxes(){
         Box mockBox = mock(Box.class);
         Box mockBox2 = mock(Box.class);
         SpriteBatch mockSpriteBatch = mock(SpriteBatch.class);
@@ -87,5 +98,12 @@ public class BoxGridTests {
         verify(mockBox2).draw(mockSpriteBatch);
     }
 
+    @Test
+    public void testShouldCreateAFullRowOnRow0(){
+        boxGrid.createNewRowOfBoxes();
 
+        for(int i=0;i<7;i++){
+            assertNotNull(boxGrid.getBoxAt(0,i));
+        }
+    }
 }

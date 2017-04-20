@@ -1,20 +1,18 @@
 package com.gdimitris.boxcrush;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class BoxCrush extends Game {
+public class BoxCrush extends Game implements InputProcessor {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private BoxGrid boxGrid;
-	private Sprite sprite;
+    private BoxFactory boxFactory;
 
 	@Override
 	public void create () {
@@ -25,11 +23,11 @@ public class BoxCrush extends Game {
 		camera.setToOrtho(true,width,height);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-		boxGrid = new BoxGrid(width,height);
-        boxGrid.addBoxAtPosition(new Box(),1,1);
-		sprite = new Sprite(new Texture("alienBlue_square.png"));
-        sprite.flip(false,true);
-        sprite.setPosition(100,20);
+        boxFactory = new BoxFactory();
+		boxGrid = new BoxGrid(boxFactory);
+        boxGrid.createNewRowOfBoxes();
+        boxGrid.shiftBoxesByOneRow();
+        Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
@@ -47,4 +45,49 @@ public class BoxCrush extends Game {
 	public void dispose () {
 		batch.dispose();
 	}
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.SPACE){
+            boxGrid.shiftBoxesByOneRow();
+            boxGrid.createNewRowOfBoxes();
+            camera.update();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
 }

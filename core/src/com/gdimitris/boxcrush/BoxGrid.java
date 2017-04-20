@@ -8,14 +8,22 @@ public class BoxGrid {
     private static final int ROWS = 9;
     private static final int COLUMNS = 7;
     private Box[][] boxArray;
+    private int boxWidth;
+    private int boxHeight;
+    private BoxFactory boxFactory;
 
-
-    public BoxGrid(int width, int height){
+    public BoxGrid(BoxFactory boxFactory){
         boxArray = new Box[ROWS][COLUMNS];
+        this.boxFactory = boxFactory;
+        boxWidth = 70;
+        boxHeight = 70;
     }
 
     public void addBoxAtPosition(Box box, int row, int col) {
-        boxArray[row][col] = box;
+        if (box!=null){
+            boxArray[row][col] = box;
+            box.setPosition(col * boxWidth, row * boxHeight);
+        }
     }
 
     public Box getBoxAt(int row, int col) {
@@ -25,7 +33,7 @@ public class BoxGrid {
     public void shiftBoxesByOneRow() {
         for(int row = ROWS-2; row>0;row--){
             for(int col = COLUMNS-1; col> 0;col--){
-               boxArray[row+1][col] = boxArray[row][col];
+               addBoxAtPosition(boxArray[row][col],row+1,col);
                removeBoxAtPosition(row,col);
             }
         }
@@ -42,13 +50,19 @@ public class BoxGrid {
         boxArray[row][col] = null;
     }
 
-    public void draw(SpriteBatch spriteBatch) {
+    public void  draw(SpriteBatch spriteBatch) {
         for(int i=0;i<ROWS;i++){
             for(int j=0;j<COLUMNS;j++){
                 if(boxArray[i][j] != null){
                     boxArray[i][j].draw(spriteBatch);
                 }
             }
+        }
+    }
+
+    public void createNewRowOfBoxes() {
+        for(int i=0;i<COLUMNS;i++){
+            addBoxAtPosition(boxFactory.createBox(),0,i);
         }
     }
 }
