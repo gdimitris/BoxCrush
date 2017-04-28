@@ -31,10 +31,12 @@ public class BoxGrid {
     }
 
     public void shiftBoxesByOneRow() {
-        for(int row = ROWS-2; row>0;row--){
-            for(int col = COLUMNS-1; col> 0;col--){
-               addBoxAtPosition(boxArray[row][col],row+1,col);
-               removeBoxAtPosition(row,col);
+        for(int row = ROWS-2; row>=0;row--){
+            for(int col = COLUMNS-1; col>=0;col--){
+                if (boxArray[row][col] != null){
+                    addBoxAtPosition(boxArray[row][col],row+1,col);
+                    removeBoxAtPosition(row,col);
+                }
             }
         }
     }

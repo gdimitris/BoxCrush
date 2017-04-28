@@ -7,14 +7,19 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class BoxCrush extends Game implements InputProcessor {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private BoxGrid boxGrid;
     private BoxFactory boxFactory;
+    private World world;
+    private Box2DDebugRenderer debugRenderer;
 
-	@Override
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
         int width = Gdx.graphics.getWidth();
@@ -25,9 +30,12 @@ public class BoxCrush extends Game implements InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         boxFactory = new BoxFactory();
 		boxGrid = new BoxGrid(boxFactory);
-        boxGrid.createNewRowOfBoxes();
-        boxGrid.shiftBoxesByOneRow();
+//        boxGrid.createNewRowOfBoxes();
+//        boxGrid.shiftBoxesByOneRow();
         Gdx.input.setInputProcessor(this);
+
+        world = new World(new Vector2(0,-10), true);
+        debugRenderer = new Box2DDebugRenderer();
 	}
 
 	@Override
@@ -39,6 +47,8 @@ public class BoxCrush extends Game implements InputProcessor {
 		batch.begin();
         boxGrid.draw(batch);
 		batch.end();
+        debugRenderer.render(world,camera.combined);
+        world.step(1/60f,6,2);
 	}
 	
 	@Override
