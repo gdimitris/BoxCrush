@@ -18,6 +18,7 @@ public class BoxFactory {
 
     public Box createBox(int x, int y, int width, int height){
         Box box = new Box();
+        box.setSize(width,height);
         BodyDef bodyDef = createBodyDefinition(x, y);
 
         Body pBody = world.createBody(bodyDef);

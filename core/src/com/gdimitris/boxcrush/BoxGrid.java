@@ -8,21 +8,24 @@ public class BoxGrid {
     private static final int ROWS = 9;
     private static final int COLUMNS = 7;
     private Box[][] boxArray;
-    private int boxWidth;
-    private int boxHeight;
+    private int boxSize;
+    private int padding;
     private BoxFactory boxFactory;
 
-    public BoxGrid(BoxFactory boxFactory){
+    public BoxGrid(BoxFactory boxFactory, int width){
         boxArray = new Box[ROWS][COLUMNS];
         this.boxFactory = boxFactory;
-        boxWidth = 70;
-        boxHeight = 70;
+        padding = 3;
+        boxSize = (width-(padding * (COLUMNS + 1)))/COLUMNS;
+
     }
 
     public void addBoxAtPosition(Box box, int row, int col) {
         if (box!=null){
             boxArray[row][col] = box;
-            box.setPosition(col * boxWidth, row * boxHeight);
+            int x = col * (boxSize + padding) + padding;
+            int y = row * (boxSize + padding) + padding;
+            box.setPosition(x, y);
         }
     }
 
@@ -64,7 +67,7 @@ public class BoxGrid {
 
     public void createNewRowOfBoxes() {
         for(int i=0;i<COLUMNS;i++){
-            addBoxAtPosition(boxFactory.createBox(0,0,70,70),0,i);
+            addBoxAtPosition(boxFactory.createBox(0,0, boxSize,boxSize),0,i);
         }
     }
 }

@@ -30,7 +30,7 @@ public class BoxGridTests {
     public void setup(){
         boxFactory = Mockito.mock(BoxFactory.class);
         when(boxFactory.createBox(anyInt(),anyInt(),anyInt(),anyInt())).thenReturn(Mockito.mock(Box.class));
-        boxGrid = new BoxGrid(boxFactory);
+        boxGrid = new BoxGrid(boxFactory,12);
     }
 
     @Test

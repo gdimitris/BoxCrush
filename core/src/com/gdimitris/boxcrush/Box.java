@@ -16,7 +16,6 @@ public class Box {
 
     public Box(){
         sprite = new Sprite(new Texture("alienBlue_square.png"));
-        sprite.setPosition(10,10);
         sprite.flip(false,true);
     }
 

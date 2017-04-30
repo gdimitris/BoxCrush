@@ -34,7 +34,7 @@ public class BoxCrush extends Game implements InputProcessor {
         debugRenderer = new Box2DDebugRenderer();
 
         boxFactory = new BoxFactory(world);
-		boxGrid = new BoxGrid(boxFactory);
+		boxGrid = new BoxGrid(boxFactory,width);
         boxGrid.createNewRowOfBoxes();
         boxGrid.shiftBoxesByOneRow();
         Gdx.input.setInputProcessor(this);
