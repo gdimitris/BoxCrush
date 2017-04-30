@@ -37,7 +37,7 @@ public class ProjectileLauncher {
 
     public void launchProjectiles(){
         for(Projectile p : projectiles){
-            p.launchWithVelocity(new Vector3(0.0f,-7.0f,0.0f));
+            p.launchWithVelocity(new Vector3(-4.0f,-7.0f,0.0f));
         }
     }
 }

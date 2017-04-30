@@ -20,8 +20,6 @@ public class BoxCrush extends Game implements InputProcessor {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private BoxGrid boxGrid;
-    private BoxFactory boxFactory;
-    private ProjectileFactory projectileFactory;
     private ProjectileLauncher projectileLauncher;
     private World world;
     private Box2DDebugRenderer debugRenderer;
@@ -37,9 +35,9 @@ public class BoxCrush extends Game implements InputProcessor {
 
         debugRenderer = new Box2DDebugRenderer();
 
-        boxFactory = new BoxFactory(world);
-        projectileFactory = new ProjectileFactory(world);
-        //createBoundaries(world,width,height);
+        BoxFactory boxFactory = new BoxFactory(world);
+        ProjectileFactory projectileFactory = new ProjectileFactory(world);
+        createBoundaries(world,width,height);
         projectileLauncher = new ProjectileLauncher(projectileFactory);
         projectileLauncher.setPosition(new Vector3(240,690,0));
         projectileLauncher.increaseProjectilesByOne();
@@ -131,8 +129,19 @@ public class BoxCrush extends Game implements InputProcessor {
     }
 
     private void createBoundaries(World world,int width, int height){
-        PolygonShape shape = ShapeFactory.createBoxShape(width, height);
-        Body body = world.createBody(BodyFactory.createStaticBody(width/2,height/2));
+        PolygonShape shape = ShapeFactory.createBoxShape(1, height);
+
+        Body body = world.createBody(BodyFactory.createStaticBody(3,height/2));
+        body.createFixture(shape,1.0f);
+
+        body = world.createBody(BodyFactory.createStaticBody(width-3,height/2));
+        body.createFixture(shape,1.0f);
+
+        shape = ShapeFactory.createBoxShape(width,1);
+        body = world.createBody(BodyFactory.createStaticBody(width/2,3));
+        body.createFixture(shape,1.0f);
+
+        body = world.createBody(BodyFactory.createStaticBody(width/2,height-3));
         body.createFixture(shape,1.0f);
     }
 }
