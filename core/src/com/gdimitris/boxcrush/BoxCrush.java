@@ -64,6 +64,7 @@ public class BoxCrush extends Game implements InputProcessor {
 	public void update(float delta){
 		world.step(1/60f,6,2);
 		camera.update();
+        projectileLauncher.update(delta);
 		batch.setProjectionMatrix(camera.combined);
 	}
 

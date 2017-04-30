@@ -40,4 +40,10 @@ public class ProjectileLauncher {
             p.launchWithVelocity(new Vector3(-4.0f,-7.0f,0.0f));
         }
     }
+
+    public void update(float delta){
+        for(Projectile p : projectiles){
+            p.update(delta);
+        }
+    }
 }

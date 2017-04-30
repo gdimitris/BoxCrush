@@ -29,10 +29,15 @@ public class Projectile {
 
     public void setPosition(Vector3 position) {
         sprite.setPosition(position.x,position.y);
-        //body.setTransform(new Vector2( (position.x + (sprite.getWidth() / 2) / PIXELS_PER_METER), (position.y + (sprite.getHeight()/2)) / PIXELS_PER_METER), body.getAngle());
+        body.setTransform(new Vector2( (position.x + (sprite.getWidth()/2)) / PIXELS_PER_METER, (position.y + (sprite.getHeight() / 2 ) )/ PIXELS_PER_METER),body.getAngle());
     }
 
     public void setRadius(float radius) {
         sprite.setSize(2 * radius,2 * radius);
+    }
+
+    public void update(float delta) {
+        Vector2 bodyPos = body.getPosition();
+        sprite.setPosition((bodyPos.x * PIXELS_PER_METER) - sprite.getWidth()/2, (bodyPos.y * PIXELS_PER_METER) - sprite.getHeight()/2);
     }
 }
