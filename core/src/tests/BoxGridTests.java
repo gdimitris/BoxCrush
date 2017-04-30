@@ -15,6 +15,8 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,7 +29,7 @@ public class BoxGridTests {
     @Before
     public void setup(){
         boxFactory = Mockito.mock(BoxFactory.class);
-        when(boxFactory.createBox()).thenReturn(Mockito.mock(Box.class));
+        when(boxFactory.createBox(anyInt(),anyInt(),anyInt(),anyInt())).thenReturn(Mockito.mock(Box.class));
         boxGrid = new BoxGrid(boxFactory);
     }
 

@@ -4,10 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+
+import static com.gdimitris.boxcrush.Constants.PIXELS_PER_METER;
 
 public class Box {
 
     private Sprite sprite;
+    private Body body;
 
     public Box(){
         sprite = new Sprite(new Texture("alienBlue_square.png"));
@@ -24,7 +29,15 @@ public class Box {
     }
 
     public void setPosition(float x, float y){
-        Gdx.app.log("Box",String.format("Updating Box position to %f %f",x,y));
-        sprite.setPosition(x, y);
+        sprite.setPosition(x , y);
+        body.setTransform(new Vector2( (x + (sprite.getWidth()/2)) / PIXELS_PER_METER, (y + (sprite.getHeight() / 2 ) )/ PIXELS_PER_METER),body.getAngle());
+    }
+
+    public Sprite getSprite(){
+        return sprite;
+    }
+
+    public void setBody(Body body){
+        this.body = body;
     }
 }

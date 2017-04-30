@@ -64,7 +64,7 @@ public class BoxGrid {
 
     public void createNewRowOfBoxes() {
         for(int i=0;i<COLUMNS;i++){
-            addBoxAtPosition(boxFactory.createBox(),0,i);
+            addBoxAtPosition(boxFactory.createBox(0,0,70,70),0,i);
         }
     }
 }

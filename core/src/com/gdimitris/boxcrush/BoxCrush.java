@@ -8,8 +8,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+
+import static com.gdimitris.boxcrush.Constants.PIXELS_PER_METER;
 
 public class BoxCrush extends Game implements InputProcessor {
 	private SpriteBatch batch;
@@ -26,41 +30,52 @@ public class BoxCrush extends Game implements InputProcessor {
         int height = Gdx.graphics.getHeight();
 		camera = new OrthographicCamera(width,height);
 		camera.setToOrtho(true,width,height);
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        boxFactory = new BoxFactory();
-		boxGrid = new BoxGrid(boxFactory);
-//        boxGrid.createNewRowOfBoxes();
-//        boxGrid.shiftBoxesByOneRow();
-        Gdx.input.setInputProcessor(this);
-
-        world = new World(new Vector2(0,-10), true);
+        world = new World(new Vector2(0,0.0f), true);
         debugRenderer = new Box2DDebugRenderer();
-	}
+
+        boxFactory = new BoxFactory(world);
+		boxGrid = new BoxGrid(boxFactory);
+        boxGrid.createNewRowOfBoxes();
+        boxGrid.shiftBoxesByOneRow();
+        Gdx.input.setInputProcessor(this);
+    }
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		update(Gdx.graphics.getDeltaTime());
+
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		camera.update();
 
 		batch.begin();
         boxGrid.draw(batch);
 		batch.end();
-        debugRenderer.render(world,camera.combined);
-        world.step(1/60f,6,2);
+        debugRenderer.render(world,camera.combined.scl(PIXELS_PER_METER));
 	}
-	
-	@Override
+
+	public void update(float delta){
+		world.step(1/60f,6,2);
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+	}
+
+    @Override
+    public void resize(int width, int height) {
+        camera.setToOrtho(true,width,height);
+    }
+
+    @Override
 	public void dispose () {
 		batch.dispose();
+        world.dispose();
+        debugRenderer.dispose();
 	}
 
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.SPACE){
-            boxGrid.shiftBoxesByOneRow();
             boxGrid.createNewRowOfBoxes();
+            boxGrid.shiftBoxesByOneRow();
             camera.update();
         }
         return true;
@@ -100,4 +115,5 @@ public class BoxCrush extends Game implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }
