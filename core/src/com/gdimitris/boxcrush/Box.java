@@ -14,7 +14,8 @@ public class Box {
     private Sprite sprite;
     private Body body;
 
-    public Box(){
+    public Box(Body body) {
+        this.body = body;
         sprite = new Sprite(new Texture("alienBlue_square.png"));
         sprite.flip(false,true);
     }
@@ -36,7 +37,4 @@ public class Box {
         return sprite;
     }
 
-    public void setBody(Body body){
-        this.body = body;
-    }
 }

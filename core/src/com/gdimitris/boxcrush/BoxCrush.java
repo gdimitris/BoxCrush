@@ -8,9 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import static com.gdimitris.boxcrush.Constants.PIXELS_PER_METER;
@@ -20,6 +21,8 @@ public class BoxCrush extends Game implements InputProcessor {
 	private OrthographicCamera camera;
 	private BoxGrid boxGrid;
     private BoxFactory boxFactory;
+    private ProjectileFactory projectileFactory;
+    private ProjectileLauncher projectileLauncher;
     private World world;
     private Box2DDebugRenderer debugRenderer;
 
@@ -31,9 +34,15 @@ public class BoxCrush extends Game implements InputProcessor {
 		camera = new OrthographicCamera(width,height);
 		camera.setToOrtho(true,width,height);
         world = new World(new Vector2(0,0.0f), true);
+
         debugRenderer = new Box2DDebugRenderer();
 
         boxFactory = new BoxFactory(world);
+        projectileFactory = new ProjectileFactory(world);
+        //createBoundaries(world,width,height);
+        projectileLauncher = new ProjectileLauncher(projectileFactory);
+        projectileLauncher.setPosition(new Vector3(240,690,0));
+        projectileLauncher.increaseProjectilesByOne();
 		boxGrid = new BoxGrid(boxFactory,width);
         boxGrid.createNewRowOfBoxes();
         boxGrid.shiftBoxesByOneRow();
@@ -49,6 +58,7 @@ public class BoxCrush extends Game implements InputProcessor {
 
 		batch.begin();
         boxGrid.draw(batch);
+        projectileLauncher.draw(batch);
 		batch.end();
         debugRenderer.render(world,camera.combined.scl(PIXELS_PER_METER));
 	}
@@ -77,6 +87,10 @@ public class BoxCrush extends Game implements InputProcessor {
             boxGrid.createNewRowOfBoxes();
             boxGrid.shiftBoxesByOneRow();
             camera.update();
+        }
+
+        if(keycode == Input.Keys.L){
+            projectileLauncher.launchProjectiles();
         }
         return true;
     }
@@ -116,4 +130,9 @@ public class BoxCrush extends Game implements InputProcessor {
         return false;
     }
 
+    private void createBoundaries(World world,int width, int height){
+        PolygonShape shape = ShapeFactory.createBoxShape(width, height);
+        Body body = world.createBody(BodyFactory.createStaticBody(width/2,height/2));
+        body.createFixture(shape,1.0f);
+    }
 }
