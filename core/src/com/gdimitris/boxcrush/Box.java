@@ -13,6 +13,7 @@ public class Box {
 
     private Sprite sprite;
     private Body body;
+    private int hits;
 
     public Box(Body body) {
         this.body = body;
@@ -35,6 +36,10 @@ public class Box {
 
     public Sprite getSprite(){
         return sprite;
+    }
+
+    public void hit(){
+        body.getWorld().destroyBody(body);
     }
 
 }

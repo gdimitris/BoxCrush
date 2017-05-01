@@ -11,6 +11,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -39,12 +44,38 @@ public class BoxCrush extends Game implements InputProcessor {
         ProjectileFactory projectileFactory = new ProjectileFactory(world);
         createBoundaries(world,width,height);
         projectileLauncher = new ProjectileLauncher(projectileFactory);
-        projectileLauncher.setPosition(new Vector3(240,690,0));
+        projectileLauncher.setLaunchPosition(new Vector3(240,690,0));
         projectileLauncher.increaseProjectilesByOne();
 		boxGrid = new BoxGrid(boxFactory,width);
         boxGrid.createNewRowOfBoxes();
         boxGrid.shiftBoxesByOneRow();
         Gdx.input.setInputProcessor(this);
+
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                System.out.println("beginContact between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                System.out.println("endContact between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
     }
 
 	@Override

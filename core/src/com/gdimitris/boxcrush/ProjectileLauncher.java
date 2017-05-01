@@ -10,18 +10,18 @@ public class ProjectileLauncher {
 
     private ProjectileFactory factory;
     private ArrayList<Projectile> projectiles;
-    private Vector3 position;
+    private Vector3 launchPosition;
     private static final float PROJECTILE_RADIUS = 10.f;
 
 
     public ProjectileLauncher(ProjectileFactory factory){
         this.factory = factory;
         projectiles = new ArrayList<Projectile>();
-        this.position = Vector3.Zero;
+        this.launchPosition = Vector3.Zero;
     }
 
-    public void setPosition(Vector3 position){
-        this.position = position;
+    public void setLaunchPosition(Vector3 launchPosition){
+        this.launchPosition = launchPosition;
     }
 
     public void draw(SpriteBatch batch){
@@ -31,7 +31,7 @@ public class ProjectileLauncher {
     }
 
     public void increaseProjectilesByOne(){
-        Projectile projectile = factory.createProjectile(PROJECTILE_RADIUS, position);
+        Projectile projectile = factory.createProjectile(PROJECTILE_RADIUS, launchPosition);
         projectiles.add(projectile);
     }
 
