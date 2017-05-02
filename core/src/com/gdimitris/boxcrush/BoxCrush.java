@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import static com.gdimitris.boxcrush.Constants.PIXELS_PER_METER;
+import static com.gdimitris.boxcrush.EntityCategoryMask.*;
 
 public class BoxCrush extends Game implements InputProcessor {
 	private SpriteBatch batch;
@@ -54,16 +55,24 @@ public class BoxCrush extends Game implements InputProcessor {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                System.out.println("beginContact between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+
+            private boolean isBoxCollision(Fixture fixtureA, Fixture fixtureB) {
+                return fixtureA.getFilterData().categoryBits == BOX.getValue() || fixtureB.getFilterData().categoryBits == BOX.getValue();
+            }
+
+            private boolean isProjectileCollision(Fixture fixtureA, Fixture fixtureB) {
+                return fixtureA.getFilterData().categoryBits == PROJECTILE.getValue() || fixtureB.getFilterData().categoryBits == PROJECTILE.getValue();
             }
 
             @Override
             public void endContact(Contact contact) {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
-                System.out.println("endContact between " + fixtureA.toString() + " and " + fixtureB.toString());
+
+                if (isProjectileCollision(fixtureA, fixtureB) && isBoxCollision(fixtureA, fixtureB)){
+                    System.out.println("Box collision");
+                }
             }
 
             @Override
