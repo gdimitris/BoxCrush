@@ -20,13 +20,19 @@ public abstract class Entity {
         sprite.flip(false,true);
     }
 
+    public Entity(Body body, Sprite sprite){
+        this.body = body;
+        this.sprite = sprite;
+        this.sprite.flip(false,true);
+    }
+
     public void draw(SpriteBatch batch){
         sprite.draw(batch);
     }
 
-    public void setPosition(Vector3 position) {
-        sprite.setPosition(position.x,position.y);
-        body.setTransform(new Vector2( (position.x + (sprite.getWidth()/2)) / PIXELS_PER_METER, (position.y + (sprite.getHeight() / 2 ) )/ PIXELS_PER_METER),body.getAngle());
+    public void setEntityPosition(Vector3 gameWorldPosition) {
+        sprite.setPosition(gameWorldPosition.x,gameWorldPosition.y);
+        body.setTransform(new Vector2( (gameWorldPosition.x + (sprite.getWidth()/2)) / PIXELS_PER_METER, (gameWorldPosition.y + (sprite.getHeight() / 2 ) )/ PIXELS_PER_METER),body.getAngle());
     }
 
     public void update(float delta) {

@@ -2,7 +2,6 @@ package tests;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.gdimitris.boxcrush.Box;
 import com.gdimitris.boxcrush.BoxFactory;
 import com.gdimitris.boxcrush.BoxGrid;
@@ -16,11 +15,11 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class BoxGridTests {
 
@@ -29,9 +28,10 @@ public class BoxGridTests {
 
     @Before
     public void setup(){
+        initMocks(this);
         boxFactory = Mockito.mock(BoxFactory.class);
         when(boxFactory.createBox(anyInt(),anyInt(),anyInt(),anyInt())).thenReturn(Mockito.mock(Box.class));
-        boxGrid = new BoxGrid(boxFactory,12);
+        boxGrid = new BoxGrid(boxFactory,70);
     }
 
     @Test
@@ -59,17 +59,13 @@ public class BoxGridTests {
         Box mockBox2 = mock(Box.class);
 
         boxGrid.addBoxAtPosition(mockBox,2,2);
-        verify(mockBox).setPosition(new Vector3(140.0f,140.0f,0.0f));
         boxGrid.addBoxAtPosition(mockBox2,1,3);
-        verify(mockBox2).setPosition(new Vector3(210.0f,70.0f,0.0f));
         boxGrid.shiftBoxesByOneRow();
 
         assertEquals(mockBox,boxGrid.getBoxAt(3,2));
         assertNull(boxGrid.getBoxAt(2,2));
         assertEquals(mockBox2,boxGrid.getBoxAt(2,3));
         assertNull(boxGrid.getBoxAt(1,3));
-        verify(mockBox).setPosition(new Vector3(140.0f,210.0f,0.0f));
-        verify(mockBox2).setPosition(new Vector3(210.0f,140.0f,0.0f));
     }
 
     @Test

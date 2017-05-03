@@ -11,6 +11,10 @@ public class Projectile extends Entity {
         super(body,"ball.png");
     }
 
+    public Projectile(Body body, Sprite sprite){
+        super(body, sprite);
+    }
+
     public void launchWithVelocity(Vector3 velocity){
         Body body = getBody();
         body.applyLinearImpulse(velocity.x,velocity.y,body.getMassData().center.x,body.getMassData().center.y,true);

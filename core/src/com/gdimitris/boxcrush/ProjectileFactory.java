@@ -26,7 +26,7 @@ public class ProjectileFactory {
 
         Projectile projectile = new Projectile(body);
         projectile.setRadius(radius);
-        projectile.setPosition(position);
+        projectile.setEntityPosition(position);
         body.setUserData(projectile);
 
         circleShape.dispose();

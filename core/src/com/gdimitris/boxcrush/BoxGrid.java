@@ -26,7 +26,7 @@ public class BoxGrid {
             boxArray[row][col] = box;
             int x = col * (boxSize + padding) + padding;
             int y = row * (boxSize + padding) + padding;
-            box.setPosition(new Vector3(x, y,0.0f));
+            box.setEntityPosition(new Vector3(x, y,0.0f));
         }
     }
 
