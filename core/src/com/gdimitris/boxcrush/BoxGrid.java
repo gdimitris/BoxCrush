@@ -2,6 +2,7 @@ package com.gdimitris.boxcrush;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class BoxGrid {
 
@@ -25,7 +26,7 @@ public class BoxGrid {
             boxArray[row][col] = box;
             int x = col * (boxSize + padding) + padding;
             int y = row * (boxSize + padding) + padding;
-            box.setPosition(x, y);
+            box.setPosition(new Vector3(x, y,0.0f));
         }
     }
 

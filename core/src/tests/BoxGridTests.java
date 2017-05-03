@@ -2,6 +2,7 @@ package tests;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.gdimitris.boxcrush.Box;
 import com.gdimitris.boxcrush.BoxFactory;
 import com.gdimitris.boxcrush.BoxGrid;
@@ -58,17 +59,17 @@ public class BoxGridTests {
         Box mockBox2 = mock(Box.class);
 
         boxGrid.addBoxAtPosition(mockBox,2,2);
-        verify(mockBox).setPosition(140.0f,140.0f);
+        verify(mockBox).setPosition(new Vector3(140.0f,140.0f,0.0f));
         boxGrid.addBoxAtPosition(mockBox2,1,3);
-        verify(mockBox2).setPosition(210.0f,70.0f);
+        verify(mockBox2).setPosition(new Vector3(210.0f,70.0f,0.0f));
         boxGrid.shiftBoxesByOneRow();
 
         assertEquals(mockBox,boxGrid.getBoxAt(3,2));
         assertNull(boxGrid.getBoxAt(2,2));
         assertEquals(mockBox2,boxGrid.getBoxAt(2,3));
         assertNull(boxGrid.getBoxAt(1,3));
-        verify(mockBox).setPosition(140.0f,210.0f);
-        verify(mockBox2).setPosition(210.0f,140.0f);
+        verify(mockBox).setPosition(new Vector3(140.0f,210.0f,0.0f));
+        verify(mockBox2).setPosition(new Vector3(210.0f,140.0f,0.0f));
     }
 
     @Test
